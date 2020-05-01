@@ -19,42 +19,41 @@ const articleSchema = {
 
 const Article = mongoose.model("Article", articleSchema);
 
-app.get("/articles", function(req, res) {
-   Article.find(function(err, foundArticles) {
-    if(err) {
-        console.log("Error occured!");
-        res.send(err);
-    }
-    else {  
-        res.send(foundArticles);
-    }
-   });
-});  
-
-app.post("/articles", function(req, res) {
-    const newArticle = new Article({
-        title: req.body.title,
-        content: req.body.content
-    });
-    newArticle.save(function(err) {
+app.route("/articles")
+    .get(function(req, res) {
+        Article.find(function(err, foundArticles) {
         if(err) {
             console.log("Error occured!");
             res.send(err);
         }
-    });
-});
-
-app.delete("/articles", function(req, res) {
-    Article.deleteMany(function(err) {
-        if(err) {
-            console.log("Error occured!");
-            res.send(err);
+        else {  
+            res.send(foundArticles);
         }
-        else {
-            res.send("Success!");
-        }
-    });
-});
+        });
+    })
+    .post(function(req, res) {
+        const newArticle = new Article({
+            title: req.body.title,
+            content: req.body.content
+        });
+        newArticle.save(function(err) {
+            if(err) {
+                console.log("Error occured!");
+                res.send(err);
+            }
+        });
+    })
+    .delete(function(req, res) {
+        Article.deleteMany(function(err) {
+            if(err) {
+                console.log("Error occured!");
+                res.send(err);
+            }
+            else {
+                res.send("Success!");
+            }
+        });
+    })
 
 app.listen(3000, function() {
 
