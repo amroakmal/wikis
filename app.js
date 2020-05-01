@@ -44,6 +44,18 @@ app.post("/articles", function(req, res) {
     });
 });
 
+app.delete("/articles", function(req, res) {
+    Article.deleteMany(function(err) {
+        if(err) {
+            console.log("Error occured!");
+            res.send(err);
+        }
+        else {
+            res.send("Success!");
+        }
+    });
+});
+
 app.listen(3000, function() {
 
 });
